@@ -44,7 +44,6 @@ var MainScreen = React.createClass({
         this.setState({menu: menu});
     },
     onActionSelected: function (position) {
-        console.log(position);
         if (position === 0) {
             this.props.navigator.push({
                 name: 'edit_message'
