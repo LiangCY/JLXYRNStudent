@@ -7,5 +7,8 @@ module.exports = {
     URL_USER: URL_BASE + '/user',
     URL_EVENTS: URL_BASE + '/events',
     URL_MORE_EVENTS: URL_BASE + '/more_events',
-    URL_MESSAGES: URL_BASE + '/messages'
+    URL_MESSAGES: URL_BASE + '/messages',
+    URL_MESSAGE: URL_BASE + '/message/',
+    URL_MESSAGE_ADD: URL_BASE + '/message/add',
+    URL_MESSAGE_REPLY: URL_BASE + '/message/reply'
 };

@@ -25,12 +25,6 @@ var MessagesList = React.createClass({
             dataSource: this.state.dataSource.cloneWithRows(nextProps.messages)
         });
     },
-    selectMessage: function (message) {
-        this.props.navigator.push({
-            name: 'message',
-            messageId: message._id
-        });
-    },
     renderRow: function (message) {
         return (
             <TouchableNativeFeedback
@@ -63,6 +57,12 @@ var MessagesList = React.createClass({
     },
     _onRefresh: function () {
         this.props.onRefresh();
+    },
+    selectMessage: function (message) {
+        this.props.navigator.push({
+            name: 'message',
+            messageId: message._id
+        });
     },
     render: function () {
         return (
