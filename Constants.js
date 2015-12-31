@@ -10,5 +10,6 @@ module.exports = {
     URL_MESSAGES: URL_BASE + '/messages',
     URL_MESSAGE: URL_BASE + '/message/',
     URL_MESSAGE_ADD: URL_BASE + '/message/add',
-    URL_MESSAGE_REPLY: URL_BASE + '/message/reply'
+    URL_MESSAGE_REPLY: URL_BASE + '/message/reply',
+    URL_TEACHERS: URL_BASE + '/teachers'
 };
