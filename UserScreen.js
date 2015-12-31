@@ -27,7 +27,6 @@ var UserScreen = React.createClass({
             return response.json()
         }).then(function (json) {
             if (json.error == 0) {
-                console.log(json);
                 self.setState({
                     user: json.user
                 });
@@ -58,10 +57,10 @@ var UserScreen = React.createClass({
                         {'学号：' + this.state.user.id}
                     </Text>
                     <Text style={styles.item}>
-                        {'年级：' + this.state.user.year}
+                        {'年级：' + this.state.user.year + '级'}
                     </Text>
                     <Text style={styles.item}>
-                        {'院系：' + this.state.user.school + '级'}
+                        {'院系：' + this.state.user.school}
                     </Text>
                     <Text style={styles.item}>
                         {'专业：' + this.state.user.major}

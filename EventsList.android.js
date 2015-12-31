@@ -144,7 +144,7 @@ var EventsList = React.createClass({
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                     onEndReached={this.fetchMoreEvents}
-                    onEndReachedThreshold={160}/>
+                    onEndReachedThreshold={240}/>
             </PullToRefreshViewAndroid>
         );
     },
@@ -155,6 +155,9 @@ var EventsList = React.createClass({
 });
 
 var styles = StyleSheet.create({
+    layout: {
+        flex: 1
+    },
     row: {
         flex: 1,
         flexDirection: 'row',
@@ -193,9 +196,6 @@ var styles = StyleSheet.create({
     content: {
         fontSize: 16,
         marginTop: 4
-    },
-    layout: {
-        flex: 1
     },
     list: {
         backgroundColor: '#DADADA'

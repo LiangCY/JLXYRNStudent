@@ -13,6 +13,8 @@ var {
 var LoginScreen = require('./LoginScreen');
 var MainScreen = require('./MainScreen');
 var UserScreen = require('./UserScreen');
+var MessageEditor = require('./MessageEditor');
+var MessageScreen = require('./MessageScreen');
 
 var _navigator;
 BackAndroid.addEventListener('hardwareBackPress', () => {
@@ -28,23 +30,17 @@ var RNApp = React.createClass({
         _navigator = navigationOperations;
         if (route.name === 'login') {
             return (
-                <View style={styles.container}>
-                    <LoginScreen navigator={navigationOperations}/>
-                </View>
+                <LoginScreen navigator={navigationOperations}/>
             );
         }
         else if (route.name === 'main') {
             return (
-                <View style={styles.container}>
-                    <MainScreen navigator={navigationOperations}/>
-                </View>
+                <MainScreen menu={route.menu} navigator={navigationOperations}/>
             );
         }
         else if (route.name === 'user') {
             return (
-                <View style={styles.container}>
-                    <UserScreen/>
-                </View>
+                <UserScreen/>
             );
         }
         else if (route.name === 'event') {
@@ -54,6 +50,16 @@ var RNApp = React.createClass({
                         {route.event.date}
                     </Text>
                 </View>
+            );
+        }
+        else if (route.name === 'message') {
+            return (
+                <MessageScreen messageId={route.messageId} navigator={navigationOperations}/>
+            );
+        }
+        else if (route.name === 'edit_message') {
+            return (
+                <MessageEditor navigator={navigationOperations}/>
             );
         }
     },
@@ -73,17 +79,7 @@ var styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column'
-    },
-    title: {
-        fontSize: 20,
-        marginBottom: 8,
-        textAlign: 'center'
-    },
-    button: {
-        backgroundColor: '#0DF',
-        height: 36
-    },
-    buttonText: {}
+    }
 });
 
 AppRegistry.registerComponent('RNApp', () => RNApp);

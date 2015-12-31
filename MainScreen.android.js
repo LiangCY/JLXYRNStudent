@@ -16,11 +16,12 @@ var DRAWER_WIDTH_LEFT = 64;
 
 var DrawerMenu = require('./DrawerMenu');
 var EventsList = require('./EventsList');
+var MessagesScreen = require('./MessagesScreen');
 
 var MainScreen = React.createClass({
     getInitialState: function () {
         return ({
-            menu: '微博'
+            menu: this.props.menu
         });
     },
     renderNavigationView: function () {
@@ -42,6 +43,14 @@ var MainScreen = React.createClass({
         this.refs[DRAWER_REF].closeDrawer();
         this.setState({menu: menu});
     },
+    onActionSelected: function (position) {
+        console.log(position);
+        if (position === 0) {
+            this.props.navigator.push({
+                name: 'edit_message'
+            });
+        }
+    },
     render: function () {
         var content;
         if (this.state.menu == '私信') {
@@ -55,7 +64,8 @@ var MainScreen = React.createClass({
                     titleColor="white"
                     style={styles.toolbar}
                     onIconClicked={() => this.refs[DRAWER_REF].openDrawer()}
-                    actions={toolbarActions}/>
+                    actions={toolbarActions}
+                    onActionSelected={this.onActionSelected}/>
             );
         } else {
             toolbar = (
@@ -81,7 +91,7 @@ var MainScreen = React.createClass({
                 content = <Text>资源</Text>;
                 break;
             case '私信':
-                content = <Text>私信</Text>;
+                content = <MessagesScreen navigator={this.props.navigator}/>;
                 break;
         }
         return (
