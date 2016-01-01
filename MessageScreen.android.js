@@ -7,14 +7,12 @@ var {
     Text,
     View,
     TextInput,
-    ProgressBarAndroid
+    ProgressBarAndroid,
+    ScrollView
     } = React;
-
-var ScrollableTabView = require('react-native-scrollable-tab-view');
 
 var Constants = require('./Constants');
 var MessagesList = require('./MessagesList');
-
 
 var MessageScreen = React.createClass({
     getInitialState() {
@@ -165,34 +163,36 @@ var MessageScreen = React.createClass({
         return (
             <View style={styles.container}>
                 {toolbar}
-                <View style={styles.from}>
-                    <View style={styles.header}>
-                        <Image
-                            style={styles.avatar}
-                            source={{uri:'http://114.212.113.228/avatar/'+message.fromId}}/>
-                        <View style={styles.headerText}>
-                            <Text
-                                style={styles.title}>
-                                {message.title}
-                            </Text>
-                            <View style={styles.extra}>
+                <ScrollView>
+                    <View style={styles.from}>
+                        <View style={styles.header}>
+                            <Image
+                                style={styles.avatar}
+                                source={{uri:'http://114.212.113.228/avatar/'+message.fromId}}/>
+                            <View style={styles.headerText}>
                                 <Text
-                                    style={styles.user}>
-                                    {message.from}
+                                    style={styles.title}>
+                                    {message.title}
                                 </Text>
-                                <Text
-                                    style={styles.date}>
-                                    {message.createAt}
-                                </Text>
+                                <View style={styles.extra}>
+                                    <Text
+                                        style={styles.user}>
+                                        {message.from}
+                                    </Text>
+                                    <Text
+                                        style={styles.date}>
+                                        {message.createAt}
+                                    </Text>
+                                </View>
                             </View>
                         </View>
+                        <Text
+                            style={styles.content}>
+                            {message.content || '无内容'}
+                        </Text>
                     </View>
-                    <Text
-                        style={styles.content}>
-                        {message.content || '无内容'}
-                    </Text>
-                </View>
-                {replyContent}
+                    {replyContent}
+                </ScrollView>
             </View>
         );
     }
@@ -211,6 +211,9 @@ var styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center'
+    },
+    scroll: {
+        flex: 1
     },
     from: {
         margin: 8,
@@ -278,7 +281,7 @@ var styles = StyleSheet.create({
         color: 'orange'
     },
     replyEditor: {
-        flex: 1,
+        height: 240,
         flexDirection: 'column',
         alignItems: 'flex-start',
         margin: 8,
