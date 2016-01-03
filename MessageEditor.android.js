@@ -158,6 +158,7 @@ var MessageEditor = React.createClass({
                     <Text style={styles.label}>标题</Text>
                     <View style={styles.titleView}>
                         <TextInput
+                            placeholder="请输入私信标题"
                             style={styles.titleInput}
                             underlineColorAndroid="transparent"
                             onChangeText={(text) => this.setState({title:text})}
@@ -166,6 +167,7 @@ var MessageEditor = React.createClass({
                     <Text style={styles.label}>内容</Text>
                     <View style={styles.contentView}>
                         <TextInput
+                            placeholder="请输入私信内容"
                             style={styles.contentInput}
                             multiline={true}
                             textAlign='start'
