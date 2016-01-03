@@ -6,32 +6,28 @@ var {
     StyleSheet,
     Text,
     View,
+    Image,
     ToolbarAndroid,
     TextInput,
-    Dimensions,
+    ListView,
+    TouchableNativeFeedback,
     } = React;
-
-const DropDown = require('react-native-dropdown');
-const {
-    Select,
-    Option,
-    OptionList,
-    updatePosition
-    } = DropDown;
 
 var Constants = require('./Constants');
 
 var MessageEditor = React.createClass({
     getInitialState() {
+        var teachers = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         return {
-            teachers: [],
-            selectedTeacher: '',
-            canada: ''
+            teachers: teachers,
+            isSelecting: false,
+            selectedTeacher: null,
+            title: '',
+            content: '',
+            isAdding: false
         };
     },
     componentDidMount: function () {
-        updatePosition(this.refs['SELECT']);
-        updatePosition(this.refs['OPTIONLIST']);
         this.fetchTeachers();
     },
     fetchTeachers: function () {
@@ -42,9 +38,8 @@ var MessageEditor = React.createClass({
             return response.json()
         }).then(function (json) {
             if (json.error == 0) {
-                console.log(json);
                 self.setState({
-                    teachers: json.teachers
+                    teachers: self.state.teachers.cloneWithRows(json.teachers)
                 });
             } else {
                 ToastAndroid.show(json.message, ToastAndroid.SHORT);
@@ -53,30 +48,79 @@ var MessageEditor = React.createClass({
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },
-    _getOptionList() {
-        return this.refs['OPTIONLIST'];
+    onActionSelected: function (position) {
+        if (position == 0) {
+            if (this.state.isAdding) {
+                return;
+            }
+            this.setState({
+                isAdding: true
+            });
+            var self = this;
+            fetch(Constants.URL_MESSAGE_ADD, {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    toId: this.state.selectedTeacher._id,
+                    toName: this.state.selectedTeacher.name,
+                    title: this.state.title,
+                    content: this.state.content
+                }),
+                credentials: 'same-origin'
+            }).then(function (response) {
+                return response.json()
+            }).then(function (json) {
+                if (json.error == 0) {
+                    self.props.navigator.pop();
+                } else {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT);
+                }
+            }).catch(function (e) {
+                ToastAndroid.show(e.message, ToastAndroid.SHORT);
+            });
+
+        }
     },
-    selectTeacher(teacher) {
+    selectTeacher: function (teacher) {
         this.setState({
+            isSelecting: false,
             selectedTeacher: teacher
         });
     },
-    onActionSelected: function (position) {
-        if (position == 0) {
-            // TODO
-            this.props.navigator.pop();
-        }
+    renderRow: function (teacher) {
+        return (
+            <TouchableNativeFeedback
+                onPress={()=>{this.selectTeacher(teacher)}}
+                background={TouchableNativeFeedback.Ripple()}>
+                <View style={styles.teacherRow}>
+                    <Image
+                        style={styles.avatar}
+                        source={{uri:'http://114.212.113.228/avatar/'+teacher._id}}/>
+                    <Text style={styles.teacherText}>
+                        {teacher.name + '(' + teacher._id + ')'}
+                    </Text>
+                </View>
+            </TouchableNativeFeedback>
+        );
     },
     render() {
-        var toolbarActions = [
-            {title: '发送', icon: require('image!ic_send_white'), show: 'always'}
-        ];
-        var options = this.state.teachers.map(function (teacher, i) {
-            return <Option key={i}>{teacher.name + '(' + teacher._id + ')'}</Option>
-        });
-        var width = Dimensions.get('window').width - 40;
-        return (
-            <View style={styles.container}>
+        if (this.state.isSelecting || !this.state.selectedTeacher || !this.state.title) {
+            var toolbar = (
+                <ToolbarAndroid
+                    navIcon={require('image!ic_back_white')}
+                    title='添加私信'
+                    titleColor="white"
+                    style={styles.toolbar}
+                    onIconClicked={() => this.props.navigator.pop()}/>
+            );
+        } else {
+            var toolbarActions = [
+                {title: '发送', icon: require('image!ic_send_white'), show: 'always'}
+            ];
+            toolbar = (
                 <ToolbarAndroid
                     navIcon={require('image!ic_back_white')}
                     title='添加私信'
@@ -85,16 +129,51 @@ var MessageEditor = React.createClass({
                     onIconClicked={() => this.props.navigator.pop()}
                     actions={toolbarActions}
                     onActionSelected={this.onActionSelected}/>
+            );
+        }
+        if (this.state.isSelecting) {
+            return (
+                <View style={styles.container}>
+                    {toolbar}
+                    <ListView
+                        dataSource={this.state.teachers}
+                        renderRow={this.renderRow}
+                    />
+                </View>
+            );
+        }
+        return (
+            <View style={styles.container}>
+                {toolbar}
                 <View style={styles.editor}>
-                    <Select
-                        width={width}
-                        ref="SELECT"
-                        optionListRef={this._getOptionList}
-                        defaultValue="选择收信人"
-                        onSelect={this.selectTeacher}>
-                        {options}
-                    </Select>
-                    <OptionList ref="OPTIONLIST"/>
+                    <TouchableNativeFeedback
+                        background={TouchableNativeFeedback.Ripple()}
+                        onPress={()=>{this.setState({isSelecting:true})}}>
+                        <View style={styles.selectButton}>
+                            <Text style={styles.selectText}>
+                                {this.state.selectedTeacher && this.state.selectedTeacher.name || '选择教师'}
+                            </Text>
+                        </View>
+                    </TouchableNativeFeedback>
+                    <Text style={styles.label}>标题</Text>
+                    <View style={styles.titleView}>
+                        <TextInput
+                            style={styles.titleInput}
+                            underlineColorAndroid="transparent"
+                            onChangeText={(text) => this.setState({title:text})}
+                            value={this.state.title}/>
+                    </View>
+                    <Text style={styles.label}>内容</Text>
+                    <View style={styles.contentView}>
+                        <TextInput
+                            style={styles.contentInput}
+                            multiline={true}
+                            textAlign='start'
+                            textAlignVertical='top'
+                            underlineColorAndroid="transparent"
+                            onChangeText={(text) => this.setState({content:text})}
+                            value={this.state.content}/>
+                    </View>
                 </View>
             </View>
         );
@@ -112,7 +191,64 @@ var styles = StyleSheet.create({
     },
     editor: {
         flex: 1,
-        padding: 16
+        padding: 12
+    },
+    selectButton: {
+        padding: 12,
+        borderColor: '#3f51b5',
+        borderWidth: 1,
+        borderRadius: 4
+    },
+    selectText: {
+        fontSize: 16,
+        color: '#555'
+    },
+    label: {
+        marginTop: 16,
+        color: '#3f51b5',
+        fontSize: 16
+    },
+    titleView: {
+        marginTop: 8,
+        padding: 12,
+        borderColor: '#CCC',
+        borderWidth: 1,
+        backgroundColor: 'white'
+    },
+    titleInput: {
+        padding: 0,
+        fontSize: 16
+    },
+    contentView: {
+        flex: 1,
+        marginTop: 8,
+        marginBottom: 16,
+        padding: 12,
+        borderColor: '#CCC',
+        borderWidth: 1,
+        backgroundColor: 'white'
+    },
+    contentInput: {
+        flex: 1,
+        padding: 0,
+        fontSize: 16
+    },
+    teacherRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        borderBottomColor: '#BBB',
+        borderBottomWidth: 1
+    },
+    avatar: {
+        height: 48,
+        width: 48,
+        marginRight: 12,
+        borderRadius: 24
+    },
+    teacherText: {
+        fontSize: 16
     }
 });
 
