@@ -65,9 +65,15 @@ var MessagesScreen = React.createClass({
                     send: json.send
                 });
             } else {
+                self.setState({
+                    isRefreshing: false
+                });
                 ToastAndroid.show(json.message, ToastAndroid.SHORT);
             }
         }).catch(function (e) {
+            self.setState({
+                isRefreshing: false
+            });
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },

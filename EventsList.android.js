@@ -59,9 +59,15 @@ var EventsList = React.createClass({
                     hasMore: json.hasMore
                 });
             } else {
+                self.setState({
+                    isRefreshing: false
+                });
                 ToastAndroid.show(json.message, ToastAndroid.SHORT);
             }
         }).catch(function (e) {
+            self.setState({
+                isRefreshing: false
+            });
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },
@@ -93,9 +99,15 @@ var EventsList = React.createClass({
                     hasMore: json.hasMore
                 });
             } else {
+                self.setState({
+                    isLoadingMore: false
+                });
                 ToastAndroid.show(json.message, ToastAndroid.SHORT);
             }
         }).catch(function (e) {
+            self.setState({
+                isLoadingMore: false
+            });
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },
