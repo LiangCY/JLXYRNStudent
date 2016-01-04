@@ -3,10 +3,8 @@ var React = require('react-native');
 var {
     StyleSheet,
     ToolbarAndroid,
-    Image,
     Text,
     View,
-    TextInput,
     ProgressBarAndroid,
     ScrollView,
     ToastAndroid,
@@ -90,6 +88,10 @@ var ResourceScreen = React.createClass({
                             </View>
                         </View>
                         <Text
+                            style={styles.description}>
+                            {'资源描述'}
+                        </Text>
+                        <Text
                             style={styles.content}>
                             {resource.description || '无内容'}
                         </Text>
@@ -158,8 +160,13 @@ var styles = StyleSheet.create({
     date: {
         color: '#888'
     },
-    content: {
+    description: {
         marginTop: 16,
+        fontSize: 17,
+        color: '#333',
+        marginBottom: 8
+    },
+    content: {
         fontSize: 16
     },
     button: {
