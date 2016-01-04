@@ -11,6 +11,7 @@ var {
     TextInput,
     ListView,
     TouchableNativeFeedback,
+    ToastAndroid,
     } = React;
 
 var Constants = require('./Constants');
@@ -74,6 +75,7 @@ var MessageEditor = React.createClass({
                 return response.json()
             }).then(function (json) {
                 if (json.error == 0) {
+                    ToastAndroid.show('私信已发送', ToastAndroid.SHORT);
                     self.props.navigator.pop();
                 } else {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT);

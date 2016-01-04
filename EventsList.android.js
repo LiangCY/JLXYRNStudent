@@ -11,6 +11,7 @@ var {
     Text,
     View,
     TouchableNativeFeedback,
+    ToastAndroid,
     } = React;
 
 var Constants = require('./Constants');

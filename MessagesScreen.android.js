@@ -8,6 +8,7 @@ var {
     Text,
     View,
     TouchableNativeFeedback,
+    ToastAndroid,
     } = React;
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');

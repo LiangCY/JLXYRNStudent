@@ -10,6 +10,7 @@ var {
     View,
     TouchableNativeFeedback,
     TouchableHighlight,
+    ToastAndroid,
     } = React;
 
 var Constants = require('./Constants');
