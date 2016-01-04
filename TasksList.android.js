@@ -89,7 +89,7 @@ var TasksList = React.createClass({
                         </Text>
                         <Text
                             style={styles.deadline}>
-                            {task.deadline + ' 截止'}
+                            {task.deadline + '截止'}
                         </Text>
                     </View>
                     <Text style={statusStyle}>
@@ -102,7 +102,7 @@ var TasksList = React.createClass({
     selectTask: function (task) {
         this.props.navigator.push({
             name: 'task',
-            taskId: task._id
+            taskId: task.taskId
         });
     },
     render() {
