@@ -6,6 +6,7 @@ var {
     ListView,
     StyleSheet,
     PullToRefreshViewAndroid,
+    ProgressBarAndroid,
     Image,
     Text,
     View,
@@ -126,6 +127,14 @@ var EventsList = React.createClass({
             </TouchableNativeFeedback>
         );
     },
+    renderFooter: function () {
+        if (this.state.isLoadingMore) {
+            return (
+                <ProgressBarAndroid color="#999"/>
+            );
+        }
+        return <View/>;
+    },
     selectEvent: function (event) {
         this.props.navigator.push({
             name: 'event',
@@ -143,6 +152,7 @@ var EventsList = React.createClass({
                     style={styles.list}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
+                    renderFooter={this.renderFooter}
                     onEndReached={this.fetchMoreEvents}
                     onEndReachedThreshold={240}/>
             </PullToRefreshViewAndroid>
