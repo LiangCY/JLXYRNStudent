@@ -16,7 +16,8 @@ var DRAWER_WIDTH_LEFT = 64;
 
 var DrawerMenu = require('./DrawerMenu');
 var EventsList = require('./EventsList');
-var LessonsScreen = require('./LessonsScreen');
+var LessonsList = require('./LessonsList');
+var ResourcesList = require('./ResourcesList');
 var MessagesScreen = require('./MessagesScreen');
 
 var MainScreen = React.createClass({
@@ -82,13 +83,13 @@ var MainScreen = React.createClass({
                 content = <EventsList navigator={this.props.navigator}/>;
                 break;
             case '课程':
-                content = <LessonsScreen>课程</LessonsScreen>;
+                content = <LessonsList>课程</LessonsList>;
                 break;
             case '作业':
                 content = <Text>作业</Text>;
                 break;
             case '资源':
-                content = <Text>资源</Text>;
+                content = <ResourcesList>资源</ResourcesList>;
                 break;
             case '私信':
                 content = <MessagesScreen navigator={this.props.navigator}/>;

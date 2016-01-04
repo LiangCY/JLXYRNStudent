@@ -8,6 +8,7 @@ module.exports = {
     URL_EVENTS: URL_BASE + '/events',
     URL_MORE_EVENTS: URL_BASE + '/more_events',
     URL_LESSONS: URL_BASE + '/lessons',
+    URL_RESOURCES: URL_BASE + '/resources',
     URL_MESSAGES: URL_BASE + '/messages',
     URL_MESSAGE: URL_BASE + '/message/',
     URL_MESSAGE_ADD: URL_BASE + '/message/add',
