@@ -57,6 +57,17 @@ var EventsList = React.createClass({
         });
     },
     renderRow: function (resource) {
+        if (resource.status == -1 || resource.status == 0) {
+            var status = '未提交';
+        } else if (resource.status == 1) {
+            status = '未批改';
+        } else if (resource.status == 2) {
+            status = resource.grade;
+        } else if (resource.status == 3) {
+            status = '已申请重交';
+        } else if (resource.status == 4) {
+            status = '可重交';
+        }
         return (
             <TouchableNativeFeedback
                 onPress={()=>this.selectResource(resource)}
@@ -65,11 +76,11 @@ var EventsList = React.createClass({
                     <View style={styles.column}>
                         <Text
                             style={styles.title}>
-                            {(resource.title)}
+                            {resource.title}
                         </Text>
                         <Text
                             style={styles.lesson}>
-                            {(resource.lesson)}
+                            {resource.lesson}
                         </Text>
                     </View>
                 </View>
