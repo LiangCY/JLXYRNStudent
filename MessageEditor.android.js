@@ -95,8 +95,7 @@ var MessageEditor = React.createClass({
     renderRow: function (teacher) {
         return (
             <TouchableNativeFeedback
-                onPress={()=>{this.selectTeacher(teacher)}}
-                background={TouchableNativeFeedback.Ripple()}>
+                onPress={()=>{this.selectTeacher(teacher)}}>
                 <View style={styles.teacherRow}>
                     <Image
                         style={styles.avatar}
@@ -149,7 +148,7 @@ var MessageEditor = React.createClass({
                 {toolbar}
                 <View style={styles.editor}>
                     <TouchableNativeFeedback
-                        background={TouchableNativeFeedback.Ripple()}
+                        background={TouchableNativeFeedback.SelectableBackground()}
                         onPress={()=>{this.setState({isSelecting:true})}}>
                         <View style={styles.selectButton}>
                             <Text style={styles.selectText}>

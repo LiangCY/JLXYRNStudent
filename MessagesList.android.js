@@ -29,7 +29,7 @@ var MessagesList = React.createClass({
         return (
             <TouchableNativeFeedback
                 onPress={()=>this.selectMessage(message)}
-                background={TouchableNativeFeedback.Ripple()}>
+                background={TouchableNativeFeedback.SelectableBackground()}>
                 <View style={styles.row}>
                     <Image
                         style={styles.avatar}

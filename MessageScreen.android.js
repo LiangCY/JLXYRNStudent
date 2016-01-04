@@ -165,7 +165,7 @@ var MessageScreen = React.createClass({
         return (
             <View style={styles.container}>
                 {toolbar}
-                <ScrollView styles={styles.scroll}>
+                <ScrollView style={styles.scroll}>
                     <View style={styles.from}>
                         <View style={styles.header}>
                             <Image
@@ -215,7 +215,8 @@ var styles = StyleSheet.create({
         justifyContent: 'center'
     },
     scroll: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#E8E8E8'
     },
     from: {
         margin: 8,

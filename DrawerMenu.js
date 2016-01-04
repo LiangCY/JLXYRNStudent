@@ -66,8 +66,7 @@ var DrawerMenu = React.createClass({
         return (
             <View style={styles.header}>
                 <TouchableElement
-                    onPress={()=>this.pressUser()}
-                    background={TouchableNativeFeedback.Ripple()}>
+                    onPress={()=>this.pressUser()}>
                     <View style={styles.userInfo}>
                         <Image
                             source={{uri:this.state.avatar}}
@@ -100,7 +99,7 @@ var DrawerMenu = React.createClass({
             <View>
                 <TouchableElement
                     onPress={() =>this.props.onSelectItem(menu.title)}
-                    background={TouchableNativeFeedback.Ripple()}>
+                    background={TouchableNativeFeedback.SelectableBackground()}>
                     <View style={menu.selected?styles.menuItemActive:styles.menuItem}>
                         <Image
                             style={styles.menuIcon}

@@ -48,7 +48,7 @@ var EventsList = React.createClass({
     renderRow: function (lesson) {
         return (
             <TouchableNativeFeedback
-                background={TouchableNativeFeedback.Ripple()}>
+                background={TouchableNativeFeedback.SelectableBackground()}>
                 <View style={styles.row}>
                     <Text
                         style={styles.lesson}>

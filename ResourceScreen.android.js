@@ -98,7 +98,7 @@ var ResourceScreen = React.createClass({
                     </View>
                     <TouchableNativeFeedback
                         onPress={this.downloadFile}
-                        background={TouchableNativeFeedback.Ripple()}>
+                        background={TouchableNativeFeedback.SelectableBackground()}>
                         <View style={styles.button}>
                             <Text style={styles.buttonText}>下载资源</Text>
                         </View>

@@ -115,7 +115,7 @@ var EventsList = React.createClass({
         return (
             <TouchableNativeFeedback
                 onPress={()=>this.selectEvent(event)}
-                background={TouchableNativeFeedback.Ripple()}>
+                background={TouchableNativeFeedback.SelectableBackground()}>
                 <View style={styles.row}>
                     <Image
                         style={styles.avatar}

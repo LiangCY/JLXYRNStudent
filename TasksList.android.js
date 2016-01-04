@@ -76,7 +76,7 @@ var TasksList = React.createClass({
         return (
             <TouchableNativeFeedback
                 onPress={()=>this.selectTask(task)}
-                background={TouchableNativeFeedback.Ripple()}>
+                background={TouchableNativeFeedback.SelectableBackground()}>
                 <View style={styles.row}>
                     <View style={styles.column}>
                         <Text

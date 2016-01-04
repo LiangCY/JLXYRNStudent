@@ -108,7 +108,7 @@ var LoginScreen = React.createClass({
                 />
                 <TouchableElement
                     onPress={this.buttonClicked}
-                    background={TouchableNativeFeedback.Ripple()}>
+                    background={TouchableNativeFeedback.SelectableBackground()}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>登 录</Text>
                     </View>

@@ -60,7 +60,7 @@ var EventsList = React.createClass({
         return (
             <TouchableNativeFeedback
                 onPress={()=>this.selectResource(resource)}
-                background={TouchableNativeFeedback.Ripple()}>
+                background={TouchableNativeFeedback.SelectableBackground()}>
                 <View style={styles.row}>
                     <View style={styles.column}>
                         <Text
