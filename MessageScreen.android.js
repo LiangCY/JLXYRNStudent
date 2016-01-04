@@ -165,7 +165,7 @@ var MessageScreen = React.createClass({
         return (
             <View style={styles.container}>
                 {toolbar}
-                <ScrollView>
+                <ScrollView styles={styles.scroll}>
                     <View style={styles.from}>
                         <View style={styles.header}>
                             <Image
