@@ -89,7 +89,7 @@ var MainScreen = React.createClass({
                 content = <Text>作业</Text>;
                 break;
             case '资源':
-                content = <ResourcesList>资源</ResourcesList>;
+                content = <ResourcesList navigator={this.props.navigator}>资源</ResourcesList>;
                 break;
             case '私信':
                 content = <MessagesScreen navigator={this.props.navigator}/>;

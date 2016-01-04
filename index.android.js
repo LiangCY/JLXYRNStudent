@@ -13,6 +13,7 @@ var {
 var LoginScreen = require('./LoginScreen');
 var MainScreen = require('./MainScreen');
 var UserScreen = require('./UserScreen');
+var ResourceScreen = require('./ResourceScreen');
 var MessageEditor = require('./MessageEditor');
 var MessageScreen = require('./MessageScreen');
 
@@ -50,6 +51,11 @@ var RNApp = React.createClass({
                         {route.event.date}
                     </Text>
                 </View>
+            );
+        }
+        else if (route.name === 'resource') {
+            return (
+                <ResourceScreen resourceId={route.resourceId} navigator={navigationOperations}/>
             );
         }
         else if (route.name === 'message') {
