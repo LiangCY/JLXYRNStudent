@@ -181,7 +181,10 @@ var styles = StyleSheet.create({
         marginBottom: 12
     },
     teacherRow: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        paddingBottom: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: '#CCC'
     },
     teacherItem: {
         flexDirection: 'column',
