@@ -43,7 +43,7 @@ var ResourceScreen = React.createClass({
         });
     },
     downloadFile: function () {
-        var url = 'http://114.212.113.228' + this.state.resource.attachmentUrl;
+        var url = Constants.URL_PREFIX + this.state.resource.attachmentUrl;
         IntentAndroid.openURL(url);
     },
     render: function () {

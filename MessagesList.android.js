@@ -10,6 +10,7 @@ var {
     TouchableNativeFeedback,
     } = React;
 
+var Constants = require('./Constants');
 
 var MessagesList = React.createClass({
     getInitialState() {
@@ -33,7 +34,7 @@ var MessagesList = React.createClass({
                 <View style={styles.row}>
                     <Image
                         style={styles.avatar}
-                        source={{uri:'http://114.212.113.228/avatar/'+message.userId}}/>
+                        source={{uri:Constants.URL_PREFIX+'/avatar/'+message.userId}}/>
                     <View style={styles.column}>
                         <Text
                             numberOfLines={1}

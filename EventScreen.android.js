@@ -12,6 +12,8 @@ var {
 
 var HTMLView = require('react-native-htmlview');
 
+var Constants = require('./Constants');
+
 var EventScreen = React.createClass({
     render() {
         var event = this.props.event;
@@ -26,7 +28,7 @@ var EventScreen = React.createClass({
                 <View style={styles.row}>
                     <Image
                         style={styles.avatar}
-                        source={{uri:'http://114.212.113.228/avatar/'+event.userId}}/>
+                        source={{uri:Constants.URL_PREFIX+'/avatar/'+event.userId}}/>
                     <View style={styles.column}>
                         <View style={styles.extra}>
                             <Text

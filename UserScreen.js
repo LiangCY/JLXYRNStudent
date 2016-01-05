@@ -46,7 +46,7 @@ var UserScreen = React.createClass({
                 <View style={styles.header}>
                     <Image
                         style={styles.avatar}
-                        source={{uri:'http://114.212.113.228/avatar/' +this.state.user.id}}
+                        source={{uri:Constants.URL_PREFIX+'/avatar/' +this.state.user.id}}
                     />
                     <Text style={styles.name}>
                         {this.state.user.name}

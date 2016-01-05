@@ -22,7 +22,7 @@ var DrawerMenu = React.createClass({
         });
         return {
             isLoading: false,
-            avatar: 'http://114.212.113.228/img/user.jpg',
+            avatar: Constants.URL_PREFIX + '/img/user.jpg',
             name: '',
             dataSource: dataSource.cloneWithRows([
                 {title: '微博', icon: require('image!ic_event'), selected: this.props.selected == '微博'},
@@ -45,7 +45,7 @@ var DrawerMenu = React.createClass({
         }).then(function (json) {
             if (json.error == 0) {
                 self.setState({
-                    avatar: 'http://114.212.113.228/avatar/' + json.user.id,
+                    avatar: Constants.URL_PREFIX + '/avatar/' + json.user.id,
                     name: json.user.name
                 });
             } else {

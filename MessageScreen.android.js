@@ -106,7 +106,7 @@ var MessageScreen = React.createClass({
                     <View style={styles.extra}>
                         <Image
                             style={styles.avatar}
-                            source={{uri:'http://114.212.113.228/avatar/'+message.toId}}/>
+                            source={{uri:Constants.URL_PREFIX+'/avatar/'+message.toId}}/>
                         <Text
                             style={styles.user}>
                             {message.to}
@@ -170,7 +170,7 @@ var MessageScreen = React.createClass({
                         <View style={styles.header}>
                             <Image
                                 style={styles.avatar}
-                                source={{uri:'http://114.212.113.228/avatar/'+message.fromId}}/>
+                                source={{uri:Constants.URL_PREFIX+'/avatar/'+message.fromId}}/>
                             <View style={styles.headerText}>
                                 <Text
                                     style={styles.title}>

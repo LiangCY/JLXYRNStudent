@@ -99,7 +99,7 @@ var MessageEditor = React.createClass({
                 <View style={styles.teacherRow}>
                     <Image
                         style={styles.avatar}
-                        source={{uri:'http://114.212.113.228/avatar/'+teacher._id}}/>
+                        source={{uri:Constants.URL_PREFIX+'/avatar/'+teacher._id}}/>
                     <Text style={styles.teacherText}>
                         {teacher.name + '(' + teacher._id + ')'}
                     </Text>

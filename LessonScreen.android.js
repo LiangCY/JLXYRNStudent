@@ -65,7 +65,7 @@ var LessonScreen = React.createClass({
             return (
                 <View key={teacher._id} style={styles.teacherItem}>
                     <Image style={styles.avatar}
-                           source={{uri:'http://114.212.113.228/avatar/'+teacher._id}}/>
+                           source={{uri:Constants.URL_PREFIX+'/avatar/'+teacher._id}}/>
                     <Text style={styles.teacherName}>{teacher.name}</Text>
                 </View>
             );
