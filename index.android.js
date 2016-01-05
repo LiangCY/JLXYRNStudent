@@ -13,6 +13,7 @@ var {
 var LoginScreen = require('./LoginScreen');
 var MainScreen = require('./MainScreen');
 var UserScreen = require('./UserScreen');
+var EventScreen = require('./EventScreen');
 var TaskScreen = require('./TaskScreen');
 var ResourceScreen = require('./ResourceScreen');
 var MessageEditor = require('./MessageEditor');
@@ -47,11 +48,7 @@ var RNApp = React.createClass({
         }
         else if (route.name === 'event') {
             return (
-                <View style={styles.container}>
-                    <Text>
-                        {route.event.date}
-                    </Text>
-                </View>
+                <EventScreen event={route.event} navigator={navigationOperations}/>
             );
         }
         else if (route.name === 'task') {

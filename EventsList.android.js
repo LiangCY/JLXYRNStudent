@@ -149,17 +149,36 @@ var EventsList = React.createClass({
         return <View/>;
     },
     selectEvent: function (event) {
-        this.props.navigator.push({
-            name: 'event',
-            event: event
-        });
+        switch (event.type) {
+            case 0:
+                this.props.navigator.push({
+                    name: 'event',
+                    event: event
+                });
+                break;
+            case 1:
+            case 2:
+            case 6:
+            case 7:
+                this.props.navigator.push({
+                    name: 'task',
+                    taskId: event.taskId
+                });
+                break;
+            case 3:
+                this.props.navigator.push({
+                    name: 'resource',
+                    resourceId: event.resourceId
+                });
+                break;
+        }
     },
     render() {
         return (
             <PullToRefreshViewAndroid
                 style={styles.layout}
                 refreshing={this.state.isRefreshing}
-                onRefresh={this._onRefresh}
+                onRefresh={this.fetchEvents}
                 colors={['#3F51B5', '#FF4081']}>
                 <ListView
                     style={styles.list}
@@ -170,10 +189,6 @@ var EventsList = React.createClass({
                     onEndReachedThreshold={240}/>
             </PullToRefreshViewAndroid>
         );
-    },
-
-    _onRefresh() {
-        this.fetchEvents();
     }
 });
 
