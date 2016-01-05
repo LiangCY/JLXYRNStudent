@@ -37,6 +37,7 @@ var LoginScreen = React.createClass({
                     username: userInfo[0] ? userInfo[0] : '',
                     password: userInfo[1] ? userInfo[1] : ''
                 });
+                this.login();
             }
         } catch (error) {
             this.setState({
@@ -45,7 +46,7 @@ var LoginScreen = React.createClass({
             });
         }
     },
-    buttonClicked: function () {
+    login: function () {
         if (this.state.username == '') {
             ToastAndroid.show('请输入学号', ToastAndroid.SHORT);
             return;
@@ -107,7 +108,7 @@ var LoginScreen = React.createClass({
                     secureTextEntry={true}
                 />
                 <TouchableElement
-                    onPress={this.buttonClicked}
+                    onPress={this.login}
                     background={TouchableNativeFeedback.SelectableBackground()}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>登 录</Text>
