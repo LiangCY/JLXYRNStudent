@@ -72,7 +72,7 @@ var TaskScreen = React.createClass({
                 status = '未批改';
                 statusStyle = styles.statusNotGrade
             } else if (homework.status == 2) {
-                status = homework.grade + (homework.remark ? ' （' + homework.remark + ')' : '');
+                status = homework.grade + (homework.remark ? ' (' + homework.remark + ')' : '');
                 statusStyle = parseInt(status) >= 60 ? styles.statusPass : styles.statusNotPass;
             } else if (homework.status == 3) {
                 status = '已申请重交';
