@@ -1,7 +1,7 @@
 const URL_BASE = 'http://219.219.117.114:3060';
 
 module.exports = {
-    URL_PREFIX: URL_BASE + 'http://219.219.117.114',
+    URL_PREFIX: 'http://219.219.117.114',
     URL_LOGIN: URL_BASE + '/login',
     URL_LOGOUT: URL_BASE + '/logout',
     URL_USER_BASIC: URL_BASE + '/user_basic',
