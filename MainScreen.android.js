@@ -7,7 +7,7 @@ var {
     DrawerLayoutAndroid,
     ToolbarAndroid,
     Dimensions,
-    Text,
+    AsyncStorage,
     } = React;
 
 
@@ -33,6 +33,7 @@ var MainScreen = React.createClass({
                 selected={this.state.menu}
                 onSelectItem={this.onSelectItem}
                 onPressUser={this.onPressUser}
+                onLogout={this.onLogout}
             />
         );
     },
@@ -45,6 +46,13 @@ var MainScreen = React.createClass({
     onSelectItem: function (menu) {
         this.refs[DRAWER_REF].closeDrawer();
         this.setState({menu: menu});
+    },
+    onLogout: function () {
+        this.refs[DRAWER_REF].closeDrawer();
+        AsyncStorage.clear();
+        this.props.navigator.immediatelyResetRouteStack([
+            {name: 'login'}
+        ]);
     },
     onActionSelected: function (position) {
         if (position === 0) {
