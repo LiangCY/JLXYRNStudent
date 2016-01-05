@@ -45,9 +45,16 @@ var EventsList = React.createClass({
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },
+    selectLesson: function (lesson) {
+        this.props.navigator.push({
+            name: 'lesson',
+            lessonId: lesson.id
+        });
+    },
     renderRow: function (lesson) {
         return (
             <TouchableNativeFeedback
+                onPress={()=>this.selectLesson(lesson)}
                 background={TouchableNativeFeedback.SelectableBackground()}>
                 <View style={styles.row}>
                     <Text
