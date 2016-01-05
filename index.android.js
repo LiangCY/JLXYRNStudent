@@ -4,11 +4,12 @@ var React = require('react-native');
 var {
     AppRegistry,
     StyleSheet,
-    View,
+    Image,
     Navigator,
     BackAndroid,
-    Text,
     } = React;
+
+var TimerMixin = require('react-timer-mixin');
 
 var LoginScreen = require('./LoginScreen');
 var MainScreen = require('./MainScreen');
@@ -30,6 +31,17 @@ BackAndroid.addEventListener('hardwareBackPress', () => {
 });
 
 var RNApp = React.createClass({
+    mixins: [TimerMixin],
+    getInitialState: function () {
+        return {
+            splashed: false
+        };
+    },
+    componentDidMount: function () {
+        this.setTimeout(() => {
+            this.setState({splashed: true});
+        }, 2000);
+    },
     RouteMapper: function (route, navigationOperations) {
         _navigator = navigationOperations;
         if (route.name === 'login') {
@@ -79,21 +91,31 @@ var RNApp = React.createClass({
         }
     },
     render: function () {
-        var initialRoute = {name: 'login'};
-        return (
-            <Navigator
-                configureScene={(route) => Navigator.SceneConfigs.FadeAndroid}
-                initialRoute={initialRoute}
-                renderScene={this.RouteMapper}
-            />
-        );
+        if (this.state.splashed) {
+            var initialRoute = {name: 'login'};
+            return (
+                <Navigator
+                    configureScene={(route) => Navigator.SceneConfigs.FadeAndroid}
+                    initialRoute={initialRoute}
+                    renderScene={this.RouteMapper}
+                />
+            );
+        } else {
+            return (
+                <Image
+                    style={styles.cover}
+                    source={require('image!splash')}/>
+            );
+        }
     }
 });
 
 var styles = StyleSheet.create({
-    container: {
+    cover: {
         flex: 1,
-        flexDirection: 'column'
+        width: null,
+        height: null,
+        resizeMode: Image.resizeMode.cover
     }
 });
 
