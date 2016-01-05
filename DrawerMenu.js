@@ -98,8 +98,7 @@ var DrawerMenu = React.createClass({
         return (
             <View>
                 <TouchableElement
-                    onPress={() =>this.props.onSelectItem(menu.title)}
-                    background={TouchableNativeFeedback.SelectableBackground()}>
+                    onPress={() =>this.props.onSelectItem(menu.title)}>
                     <View style={menu.selected?styles.menuItemActive:styles.menuItem}>
                         <Image
                             style={styles.menuIcon}
@@ -112,7 +111,30 @@ var DrawerMenu = React.createClass({
             </View>
         );
     },
+    renderFooter: function () {
+        var TouchableElement = TouchableHighlight;
+        if (Platform.OS === 'android') {
+            TouchableElement = TouchableNativeFeedback;
+        }
+        return (
+            <TouchableElement
+                onPress={() =>this.props.onLogout()}>
+                <View style={styles.logoutRow}>
+                    <Image
+                        style={styles.menuIcon}
+                        source={require('image!ic_logout')}/>
+                    <Text style={styles.logoutText}>
+                        {'退出当前账号'}
+                    </Text>
+                </View>
+            </TouchableElement>
+        );
+    },
     render: function () {
+        var TouchableElement = TouchableHighlight;
+        if (Platform.OS === 'android') {
+            TouchableElement = TouchableNativeFeedback;
+        }
         return (
             <View style={styles.container} {...this.props}>
                 <ListView
@@ -120,7 +142,8 @@ var DrawerMenu = React.createClass({
                     renderRow={this.renderRow}
                     showsVerticalScrollIndicator={false}
                     renderHeader={this.renderHeader}
-                    style={{flex:1, backgroundColor: 'white'}}
+                    renderFooter={this.renderFooter}
+                    style={styles.list}
                 />
             </View>
         );
@@ -129,19 +152,18 @@ var DrawerMenu = React.createClass({
 
 var styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#FAFAFA'
-    },
-    header: {
         flex: 1
     },
+    list: {
+        backgroundColor: 'white'
+    },
+    header: {},
     userInfo: {
         flex: 1,
         backgroundColor: '#3f51b5',
         flexDirection: 'row',
         paddingLeft: 16,
-        paddingTop: 32,
-        paddingBottom: 32,
+        paddingVertical: 32,
         alignItems: 'center',
         marginBottom: 12
     },
@@ -158,13 +180,11 @@ var styles = StyleSheet.create({
         marginLeft: 16
     },
     menuItem: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         padding: 12
     },
     menuItemActive: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         padding: 12,
@@ -179,6 +199,17 @@ var styles = StyleSheet.create({
         marginRight: 12,
         width: 32,
         height: 32
+    },
+    logoutRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 12,
+        borderTopColor: '#CCC',
+        borderTopWidth: 1
+    },
+    logoutText: {
+        fontSize: 16,
+        marginLeft: 16
     }
 });
 
