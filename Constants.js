@@ -1,7 +1,7 @@
-const URL_BASE = 'http://219.219.117.114:3060';
+const URL_BASE = 'http://114.212.113.228:3060';
 
 module.exports = {
-    URL_PREFIX: 'http://219.219.117.114',
+    URL_PREFIX: 'http://114.212.113.228',
     URL_LOGIN: URL_BASE + '/login',
     URL_LOGOUT: URL_BASE + '/logout',
     URL_USER_BASIC: URL_BASE + '/user_basic',
@@ -18,5 +18,7 @@ module.exports = {
     URL_MESSAGE: URL_BASE + '/message/',
     URL_MESSAGE_ADD: URL_BASE + '/message/add',
     URL_MESSAGE_REPLY: URL_BASE + '/message/reply',
-    URL_TEACHERS: URL_BASE + '/teachers'
+    URL_TEACHERS: URL_BASE + '/teachers',
+    URL_TEACHER: URL_BASE + '/teacher/',
+    URL_FOLLOW: URL_BASE + '/teacher/follow'
 };

@@ -9,6 +9,7 @@ var {
     ProgressBarAndroid,
     ScrollView,
     ToastAndroid,
+    TouchableNativeFeedback,
     } = React;
 
 var Constants = require('./Constants');
@@ -41,6 +42,12 @@ var LessonScreen = React.createClass({
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },
+    selectTeacher: function (teacher) {
+        this.props.navigator.push({
+            name: 'teacher',
+            teacherId: teacher._id
+        });
+    },
     render: function () {
         var toolbar = (
             <ToolbarAndroid
@@ -63,13 +70,18 @@ var LessonScreen = React.createClass({
         var lesson = this.state.lesson;
         var teachers = lesson.teachers.map(function (teacher) {
             return (
-                <View key={teacher._id} style={styles.teacherItem}>
-                    <Image style={styles.avatar}
-                           source={{uri:Constants.URL_PREFIX+'/avatar/'+teacher._id}}/>
-                    <Text style={styles.teacherName}>{teacher.name}</Text>
-                </View>
+                <TouchableNativeFeedback
+                    key={teacher._id}
+                    onPress={()=>this.selectTeacher(teacher)}
+                    background={TouchableNativeFeedback.SelectableBackground()}>
+                    <View style={styles.teacherItem}>
+                        <Image style={styles.avatar}
+                               source={{uri:Constants.URL_PREFIX+'/avatar/'+teacher._id}}/>
+                        <Text style={styles.teacherName}>{teacher.name}</Text>
+                    </View>
+                </TouchableNativeFeedback>
             );
-        });
+        }.bind(this));
         var plans = lesson.plan.map(function (item) {
             switch (item.day) {
                 case 1:
