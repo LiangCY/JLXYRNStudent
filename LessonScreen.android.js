@@ -106,7 +106,7 @@ var LessonScreen = React.createClass({
                     day = '周日';
                     break;
             }
-            var period = item.start + ' - ' + (item.start + item.period) + '节';
+            var period = item.start + ' - ' + (item.start + item.period - 1) + '节';
             return (
                 <View key={item._id} style={styles.planRow}>
                     <Text style={styles.time}>{day + ' ' + period}</Text>

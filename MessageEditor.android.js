@@ -6,6 +6,7 @@ var {
     StyleSheet,
     Text,
     View,
+    ScrollView,
     Image,
     ToolbarAndroid,
     TextInput,
@@ -146,7 +147,7 @@ var MessageEditor = React.createClass({
         return (
             <View style={styles.container}>
                 {toolbar}
-                <View style={styles.editor}>
+                <ScrollView style={styles.editor}>
                     <TouchableNativeFeedback
                         background={TouchableNativeFeedback.SelectableBackground()}
                         onPress={()=>{this.setState({isSelecting:true})}}>
@@ -177,7 +178,7 @@ var MessageEditor = React.createClass({
                             onChangeText={(text) => this.setState({content:text})}
                             value={this.state.content}/>
                     </View>
-                </View>
+                </ScrollView>
             </View>
         );
     }
@@ -223,7 +224,7 @@ var styles = StyleSheet.create({
         fontSize: 16
     },
     contentView: {
-        flex: 1,
+        height: 240,
         marginTop: 8,
         marginBottom: 16,
         padding: 12,
