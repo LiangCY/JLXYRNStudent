@@ -5,9 +5,6 @@ var React = require('react-native');
 var {
     ListView,
     StyleSheet,
-    PullToRefreshViewAndroid,
-    ProgressBarAndroid,
-    Image,
     Text,
     View,
     TouchableNativeFeedback,
