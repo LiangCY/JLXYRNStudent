@@ -92,13 +92,13 @@ var MainScreen = React.createClass({
                 content = <EventsList navigator={this.props.navigator}/>;
                 break;
             case '课程':
-                content = <LessonsList navigator={this.props.navigator}>课程</LessonsList>;
+                content = <LessonsList navigator={this.props.navigator}/>;
                 break;
             case '作业':
-                content = <TasksList navigator={this.props.navigator}>资源</TasksList>;
+                content = <TasksList navigator={this.props.navigator}/>;
                 break;
             case '资源':
-                content = <ResourcesList navigator={this.props.navigator}>资源</ResourcesList>;
+                content = <ResourcesList navigator={this.props.navigator}/>;
                 break;
             case '私信':
                 content = <MessagesScreen navigator={this.props.navigator}/>;
