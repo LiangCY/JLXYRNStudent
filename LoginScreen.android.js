@@ -8,10 +8,8 @@ var {
     ToolbarAndroid,
     TextInput,
     Text,
-    TouchableHighlight,
     TouchableNativeFeedback,
     ToastAndroid,
-    Platform,
     } = React;
 
 var KEY_USER = '@User';
@@ -83,10 +81,6 @@ var LoginScreen = React.createClass({
         });
     },
     render: function () {
-        var TouchableElement = TouchableHighlight;
-        if (Platform.OS === 'android') {
-            TouchableElement = TouchableNativeFeedback;
-        }
         return (
             <View style={styles.container}>
                 <ToolbarAndroid
@@ -107,13 +101,13 @@ var LoginScreen = React.createClass({
                     value={this.state.password}
                     secureTextEntry={true}
                 />
-                <TouchableElement
+                <TouchableNativeFeedback
                     onPress={this.login}
                     background={TouchableNativeFeedback.SelectableBackground()}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>登 录</Text>
                     </View>
-                </TouchableElement>
+                </TouchableNativeFeedback>
             </View>
         );
     }
