@@ -121,7 +121,7 @@ var TaskScreen = React.createClass({
                                 </Text>
                                 <Text
                                     style={styles.date}>
-                                    {task.deadline + '截止'}
+                                    {task.deadline ? task.deadline + '截止' : '无截止时间'}
                                 </Text>
                             </View>
                         </View>

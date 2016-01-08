@@ -89,7 +89,7 @@ var TasksList = React.createClass({
                         </Text>
                         <Text
                             style={styles.deadline}>
-                            {task.deadline + '截止'}
+                            {task.deadline ? task.deadline + '截止' : ''}
                         </Text>
                     </View>
                     <Text style={statusStyle}>
