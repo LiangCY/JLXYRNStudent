@@ -13,7 +13,6 @@ var {
     } = React;
 
 var Constants = require('./Constants');
-var MessagesList = require('./MessagesList');
 
 var ResourceScreen = React.createClass({
     getInitialState() {
