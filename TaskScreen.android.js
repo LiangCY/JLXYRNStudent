@@ -16,7 +16,6 @@ var {
 var HTMLView = require('react-native-htmlview');
 
 var Constants = require('./Constants');
-var MessagesList = require('./MessagesList');
 
 var TaskScreen = React.createClass({
     getInitialState() {
