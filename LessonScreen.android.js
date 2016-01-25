@@ -87,30 +87,9 @@ var LessonScreen = React.createClass({
         lesson.plan.sort(function (a, b) {
             return a.day - b.day;
         });
+        var days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
         var plans = lesson.plan.map(function (item) {
-            switch (item.day) {
-                case 1:
-                    var day = '周一';
-                    break;
-                case 2:
-                    day = '周二';
-                    break;
-                case 3:
-                    day = '周三';
-                    break;
-                case 4:
-                    day = '周四';
-                    break;
-                case 5:
-                    day = '周五';
-                    break;
-                case 6:
-                    day = '周六';
-                    break;
-                case 7:
-                    day = '周日';
-                    break;
-            }
+            var day = days[item.day - 1];
             var period = item.start + ' - ' + (item.start + item.period - 1) + '节';
             return (
                 <View key={item._id} style={styles.planRow}>
@@ -119,6 +98,47 @@ var LessonScreen = React.createClass({
                 </View>
             );
         });
+        var score = lesson.score;
+        var exam = score.exam;
+        if (!exam) {
+            var examStyle = styles.scoreContent;
+        } else if (exam >= 60) {
+            examStyle = styles.scoreContentPass;
+        } else {
+            examStyle = styles.scoreContentNotPass;
+        }
+        var midterm = score.midterm;
+        if (!midterm) {
+            var midtermStyle = styles.scoreContent;
+        } else if (midterm >= 60) {
+            midtermStyle = styles.scoreContentPass;
+        } else {
+            midtermStyle = styles.scoreContentNotPass;
+        }
+        var final = score.final;
+        if (!final) {
+            var finalStyle = styles.scoreContent;
+        } else if (final >= 60) {
+            finalStyle = styles.scoreContentPass;
+        } else {
+            finalStyle = styles.scoreContentNotPass;
+        }
+        var scores = (
+            <View style={styles.scoreView}>
+                <View key={'exam'} style={styles.scoreRow}>
+                    <Text style={styles.scoreTitle}>{'测验成绩'}</Text>
+                    <Text style={examStyle}>{lesson.score.exam || '未发布'}</Text>
+                </View>
+                <View key={'midterm'} style={styles.scoreRow}>
+                    <Text style={styles.scoreTitle}>{'期中成绩'}</Text>
+                    <Text style={midtermStyle}>{lesson.score.midterm || '未发布'}</Text>
+                </View>
+                <View key={'final'} style={styles.scoreRow}>
+                    <Text style={styles.scoreTitle}>{'期末成绩'}</Text>
+                    <Text style={finalStyle}>{lesson.score.final || '未发布'}</Text>
+                </View>
+            </View>
+        );
         return (
             <View style={styles.container}>
                 {toolbar}
@@ -148,6 +168,11 @@ var LessonScreen = React.createClass({
                         <View style={styles.planView}>
                             {plans}
                         </View>
+                        <Text
+                            style={styles.sectionTitle}>
+                            {'课程成绩'}
+                        </Text>
+                        {scores}
                     </View>
                 </ScrollView>
             </View>
@@ -217,7 +242,10 @@ var styles = StyleSheet.create({
         marginTop: 6
     },
     planView: {
-        flexDirection: 'column'
+        flexDirection: 'column',
+        paddingBottom: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: '#CCC'
     },
     planRow: {
         flexDirection: 'row',
@@ -230,6 +258,33 @@ var styles = StyleSheet.create({
     classroom: {
         flex: 1,
         fontSize: 16
+    },
+    scoreView: {
+        flexDirection: 'column',
+        marginBottom: 12
+    },
+    scoreRow: {
+        flexDirection: 'row',
+        marginBottom: 4
+    },
+    scoreTitle: {
+        marginRight: 24,
+        fontSize: 16
+    },
+    scoreContent: {
+        flex: 1,
+        fontSize: 16,
+        color: '#AAA'
+    },
+    scoreContentPass: {
+        flex: 1,
+        fontSize: 16,
+        color: '#22CD36'
+    },
+    scoreContentNotPass: {
+        flex: 1,
+        fontSize: 16,
+        color: 'red'
     }
 });
 
