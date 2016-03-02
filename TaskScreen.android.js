@@ -11,6 +11,7 @@ var {
     ScrollView,
     ToastAndroid,
     IntentAndroid,
+    AsyncStorage,
     } = React;
 
 var HTMLView = require('react-native-htmlview');
@@ -20,16 +21,28 @@ var Constants = require('./Constants');
 var TaskScreen = React.createClass({
     getInitialState() {
         return {
+            token: '',
             task: null
         };
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchTask(this.props.taskId);
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchTask: function (taskId) {
         var self = this;
         fetch(Constants.URL_TASK + taskId, {
-            credentials: 'same-origin'
+            headers: {
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {

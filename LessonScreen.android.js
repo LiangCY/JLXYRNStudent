@@ -12,6 +12,7 @@ var {
     ScrollView,
     ToastAndroid,
     TouchableNativeFeedback,
+    AsyncStorage,
     } = React;
 
 var Constants = require('./Constants');
@@ -20,16 +21,28 @@ var MessagesList = require('./MessagesList');
 var LessonScreen = React.createClass({
     getInitialState() {
         return {
+            token: '',
             lesson: null
         };
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchLesson(this.props.lessonId);
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchLesson: function (lessonId) {
         var self = this;
         fetch(Constants.URL_LESSON + lessonId, {
-            credentials: 'same-origin'
+            headers: {
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {

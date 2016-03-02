@@ -10,6 +10,7 @@ var {
     View,
     TouchableNativeFeedback,
     ToastAndroid,
+    AsyncStorage,
     } = React;
 
 var Constants = require('./Constants');
@@ -20,12 +21,22 @@ var TasksList = React.createClass({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
         return {
+            token: '',
             isRefreshing: false,
             dataSource: dataSource
         };
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchTasks();
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchTasks: function () {
         if (this.state.isRefreshing) {
@@ -34,7 +45,9 @@ var TasksList = React.createClass({
         this.setState({isRefreshing: true});
         var self = this;
         fetch(Constants.URL_TASKS, {
-            credentials: 'same-origin'
+            headers: {
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {
@@ -89,7 +102,7 @@ var TasksList = React.createClass({
                         </Text>
                         <Text
                             style={styles.deadline}>
-                            {task.deadline ? task.deadline + '截止' : ''}
+                            {task.deadline ? task.deadline + '截止' : '无截止时间'}
                         </Text>
                     </View>
                     <Text style={statusStyle}>

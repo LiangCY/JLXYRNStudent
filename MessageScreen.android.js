@@ -11,7 +11,8 @@ var {
     TextInput,
     ProgressBarAndroid,
     ScrollView,
-    ToastAndroid
+    ToastAndroid,
+    AsyncStorage,
     } = React;
 
 var Constants = require('./Constants');
@@ -20,18 +21,30 @@ var MessagesList = require('./MessagesList');
 var MessageScreen = React.createClass({
     getInitialState() {
         return {
+            token: '',
             message: null,
             reply: '',
             isReplying: false
         };
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchMessage(this.props.messageId);
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchMessage: function (messageId) {
         var self = this;
         fetch(Constants.URL_MESSAGE + messageId, {
-            credentials: 'same-origin'
+            headers: {
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {
@@ -61,13 +74,13 @@ var MessageScreen = React.createClass({
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'x-access-token': this.state.token
                 },
                 body: JSON.stringify({
                     messageId: messageId,
                     reply: reply
-                }),
-                credentials: 'same-origin'
+                })
             }).then(function (response) {
                 return response.json()
             }).then(function (json) {

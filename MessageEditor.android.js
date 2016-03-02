@@ -13,6 +13,7 @@ var {
     ListView,
     TouchableNativeFeedback,
     ToastAndroid,
+    AsyncStorage,
     } = React;
 
 var Constants = require('./Constants');
@@ -21,6 +22,7 @@ var MessageEditor = React.createClass({
     getInitialState() {
         var teachers = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         return {
+            token: '',
             teachers: teachers,
             isSelecting: false,
             selectedTeacher: null,
@@ -29,13 +31,24 @@ var MessageEditor = React.createClass({
             isAdding: false
         };
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchTeachers();
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchTeachers: function () {
         var self = this;
         fetch(Constants.URL_TEACHERS, {
-            credentials: 'same-origin'
+            headers: {
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {
@@ -63,15 +76,15 @@ var MessageEditor = React.createClass({
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'x-access-token': this.state.token
                 },
                 body: JSON.stringify({
                     toId: this.state.selectedTeacher._id,
                     toName: this.state.selectedTeacher.name,
                     title: this.state.title,
                     content: this.state.content
-                }),
-                credentials: 'same-origin'
+                })
             }).then(function (response) {
                 return response.json()
             }).then(function (json) {

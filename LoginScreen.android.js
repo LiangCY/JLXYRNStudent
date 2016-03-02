@@ -65,14 +65,15 @@ var LoginScreen = React.createClass({
             body: JSON.stringify({
                 username: username,
                 password: password
-            }),
-            credentials: 'same-origin'
+            })
         }).then(function (response) {
             return response.json()
         }).then(function (json) {
             if (json.error == 0) {
-                _navigator.replace({name: 'main', menu: '课程'});
-                AsyncStorage.setItem(KEY_USER, username + ':' + password)
+                AsyncStorage.setItem(KEY_USER, username + ':' + password);
+                AsyncStorage.setItem(Constants.STORAGE_KEY_TOKEN, json.token, function () {
+                    _navigator.replace({name: 'main', menu: '消息'});
+                });
             } else {
                 ToastAndroid.show(json.message, ToastAndroid.SHORT);
             }

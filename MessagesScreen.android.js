@@ -11,6 +11,7 @@ var {
     View,
     TouchableNativeFeedback,
     ToastAndroid,
+    AsyncStorage,
     } = React;
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
@@ -22,6 +23,7 @@ var MessagesList = require('./MessagesList');
 var MessagesScreen = React.createClass({
     getInitialState() {
         return {
+            token: '',
             isRefreshing: false,
             receive: [],
             send: [],
@@ -43,11 +45,20 @@ var MessagesScreen = React.createClass({
             navigator.navigationContext.addListener('didfocus', didFocusCallback)
         ];
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchMessages();
     },
     componentWillUnmount: function () {
         this._listeners && this._listeners.forEach(listener => listener.remove());
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchMessages: function () {
         if (this.state.isRefreshing) {
@@ -56,7 +67,9 @@ var MessagesScreen = React.createClass({
         this.setState({isRefreshing: true});
         var self = this;
         fetch(Constants.URL_MESSAGES, {
-            credentials: 'same-origin'
+            headers: {
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {

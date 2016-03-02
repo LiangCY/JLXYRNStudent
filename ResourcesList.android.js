@@ -10,6 +10,7 @@ var {
     View,
     TouchableNativeFeedback,
     ToastAndroid,
+    AsyncStorage,
     } = React;
 
 var Constants = require('./Constants');
@@ -20,12 +21,22 @@ var EventsList = React.createClass({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
         return {
+            token: '',
             isRefreshing: false,
             dataSource: dataSource
         };
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchResources();
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchResources: function () {
         if (this.state.isRefreshing) {
@@ -34,7 +45,9 @@ var EventsList = React.createClass({
         this.setState({isRefreshing: true});
         var self = this;
         fetch(Constants.URL_RESOURCES, {
-            credentials: 'same-origin'
+            headers: {
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {

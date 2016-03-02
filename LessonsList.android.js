@@ -8,6 +8,7 @@ var {
     Text,
     View,
     TouchableNativeFeedback,
+    AsyncStorage,
     } = React;
 
 var Constants = require('./Constants');
@@ -18,16 +19,29 @@ var EventsList = React.createClass({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
         return {
+            token: '',
             dataSource: dataSource
         };
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchLessons();
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        console.log(token);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchLessons: function () {
         var self = this;
         fetch(Constants.URL_LESSONS, {
-            credentials: 'same-origin'
+            headers: {
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {

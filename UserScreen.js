@@ -6,6 +6,7 @@ var {
     StyleSheet,
     Text,
     View,
+    AsyncStorage,
     } = React;
 
 var Constants = require('./Constants');
@@ -13,16 +14,28 @@ var Constants = require('./Constants');
 var UserScreen = React.createClass({
     getInitialState: function () {
         return {
+            token: '',
             user: null
         };
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchUser();
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchUser: function () {
         var self = this;
         fetch(Constants.URL_USER, {
-            credentials: 'same-origin'
+            headers: {
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {

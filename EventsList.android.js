@@ -12,16 +12,17 @@ var {
     View,
     TouchableNativeFeedback,
     ToastAndroid,
+    AsyncStorage,
     } = React;
 
 var Constants = require('./Constants');
-
 var EventsList = React.createClass({
     getInitialState() {
         var dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
         return {
+            token: '',
             isRefreshing: false,
             loaded: 0,
             dataSource: dataSource,
@@ -29,8 +30,17 @@ var EventsList = React.createClass({
             hasMore: false
         };
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchEvents();
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchEvents: function () {
         if (this.state.isRefreshing) {
@@ -39,18 +49,13 @@ var EventsList = React.createClass({
         this.setState({isRefreshing: true});
         var self = this;
         fetch(Constants.URL_EVENTS, {
-            method: 'post',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                type: 10
-            }),
-            credentials: 'same-origin'
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {
+            console.log(json);
             if (json.error == 0) {
                 self.setState({
                     isRefreshing: false,
@@ -77,17 +82,10 @@ var EventsList = React.createClass({
         }
         this.setState({isLoadingMore: true});
         var self = this;
-        fetch(Constants.URL_MORE_EVENTS, {
-            method: 'post',
+        fetch(Constants.URL_EVENTS + '?count=' + (this.state.loaded + 30), {
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                type: 10,
-                count: this.state.loaded
-            }),
-            credentials: 'same-origin'
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {

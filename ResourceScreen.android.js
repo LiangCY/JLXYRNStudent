@@ -12,6 +12,7 @@ var {
     ToastAndroid,
     TouchableNativeFeedback,
     IntentAndroid,
+    AsyncStorage,
     } = React;
 
 var Constants = require('./Constants');
@@ -19,16 +20,28 @@ var Constants = require('./Constants');
 var ResourceScreen = React.createClass({
     getInitialState() {
         return {
+            token: '',
             resource: null
         };
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchResource(this.props.resourceId);
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchResource: function (resourceId) {
         var self = this;
         fetch(Constants.URL_RESOURCE + resourceId, {
-            credentials: 'same-origin'
+            headers: {
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {

@@ -11,6 +11,7 @@ var {
     TouchableNativeFeedback,
     TouchableHighlight,
     ToastAndroid,
+    AsyncStorage,
     } = React;
 
 var Constants = require('./Constants');
@@ -21,25 +22,35 @@ var DrawerMenu = React.createClass({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
         return {
+            token: '',
             isLoading: false,
             avatar: Constants.URL_PREFIX + '/img/user.jpg',
             name: '',
             dataSource: dataSource.cloneWithRows([
+                {title: '消息', icon: require('image!ic_event'), selected: this.props.selected == '消息'},
                 {title: '课程', icon: require('image!ic_lesson'), selected: this.props.selected == '课程'},
-                {title: '微博', icon: require('image!ic_event'), selected: this.props.selected == '微博'},
                 {title: '作业', icon: require('image!ic_homework'), selected: this.props.selected == '作业'},
                 {title: '资源', icon: require('image!ic_resource'), selected: this.props.selected == '资源'},
                 {title: '私信', icon: require('image!ic_message'), selected: this.props.selected == '私信'}
             ])
         };
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchUser();
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchUser: function () {
         var self = this;
         fetch(Constants.URL_USER_BASIC, {
-            credentials: 'same-origin'
+            headers: {'x-access-token': this.state.token}
         }).then(function (response) {
             return response.json()
         }).then(function (json) {
@@ -82,8 +93,8 @@ var DrawerMenu = React.createClass({
     componentWillReceiveProps: function (nextProps) {
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows([
+                {title: '消息', icon: require('image!ic_event'), selected: nextProps.selected == '消息'},
                 {title: '课程', icon: require('image!ic_lesson'), selected: nextProps.selected == '课程'},
-                {title: '微博', icon: require('image!ic_event'), selected: nextProps.selected == '微博'},
                 {title: '作业', icon: require('image!ic_homework'), selected: nextProps.selected == '作业'},
                 {title: '资源', icon: require('image!ic_resource'), selected: nextProps.selected == '资源'},
                 {title: '私信', icon: require('image!ic_message'), selected: nextProps.selected == '私信'}

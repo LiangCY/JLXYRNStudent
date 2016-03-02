@@ -88,11 +88,11 @@ var MainScreen = React.createClass({
             );
         }
         switch (this.state.menu) {
+            case '消息':
+                content = <EventsList navigator={this.props.navigator}/>;
+                break;
             case '课程':
                 content = <LessonsList navigator={this.props.navigator}/>;
-                break;
-            case '微博':
-                content = <EventsList navigator={this.props.navigator}/>;
                 break;
             case '作业':
                 content = <TasksList navigator={this.props.navigator}/>;

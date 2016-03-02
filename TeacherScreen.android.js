@@ -12,6 +12,7 @@ var {
     ScrollView,
     ToastAndroid,
     TouchableNativeFeedback,
+    AsyncStorage,
     } = React;
 
 var Constants = require('./Constants');
@@ -20,17 +21,29 @@ var MessagesList = require('./MessagesList');
 var TeacherScreen = React.createClass({
     getInitialState() {
         return {
+            token: '',
             teacher: null,
             isLoading: false
         };
     },
-    componentDidMount: function () {
+    componentDidMount: async function () {
+        await this.getToken();
         this.fetchTeacher(this.props.teacherId);
+    },
+    async getToken() {
+        var token = await AsyncStorage.getItem(Constants.STORAGE_KEY_TOKEN);
+        if (!token) {
+            this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        } else {
+            this.setState({token: token});
+        }
     },
     fetchTeacher: function (teacherId) {
         var self = this;
         fetch(Constants.URL_TEACHER + teacherId, {
-            credentials: 'same-origin'
+            headers: {
+                'x-access-token': this.state.token
+            }
         }).then(function (response) {
             return response.json()
         }).then(function (json) {
@@ -53,7 +66,9 @@ var TeacherScreen = React.createClass({
         var self = this;
         if (teacher.isFollowing) {
             fetch(Constants.URL_FOLLOW + '?action=cancel&teacherId=' + teacher._id, {
-                credentials: 'same-origin'
+                headers: {
+                    'x-access-token': this.state.token
+                }
             }).then(function (response) {
                 return response.json()
             }).then(function (json) {
@@ -78,7 +93,9 @@ var TeacherScreen = React.createClass({
             });
         } else {
             fetch(Constants.URL_FOLLOW + '?action=follow&teacherId=' + teacher._id, {
-                credentials: 'same-origin'
+                headers: {
+                    'x-access-token': this.state.token
+                }
             }).then(function (response) {
                 return response.json()
             }).then(function (json) {
