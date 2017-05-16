@@ -1,4 +1,4 @@
-const URL_BASE = 'http://192.168.56.1:3061';
+const URL_BASE = 'http://219.219.117.114:3061';
 
 module.exports = {
     URL_PREFIX: 'http://219.219.117.114',
